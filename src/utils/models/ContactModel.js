@@ -7,7 +7,7 @@ const Contact = mongoose.model("Contact", {
     state: String,
     address: {
       street: String,
-      suburb, String,
+      suburb: String,
       postcode: Number,
       state: String  
     },

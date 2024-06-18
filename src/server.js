@@ -1,23 +1,30 @@
-// Importing Express to start using its code
+// Importing Express to start using its code 
 const express = require("express");
 const { default: mongoose } = require("mongoose");
 
-// Make instance of an express server to start configuring it
+// Make an instance of an Express server to start configuring it
 const app = express();
 
-// const { connect } = require("./utils/database")
+// const { connect } = require("./utils/database");
 // connect();
+
+
+app.use(express.json());
 
 app.get("/", (request, response, next) => {
 
-    response.json({
-        message: "Hello world"
-    });
+	response.json({
+		message: "Hello world!"
+	});
 
 });
 
+
+
 const ContactRouter = require("./controllers/ContactRouter.js");
-app.use("/contact", ContactRouter);
+app.use("/contacts", ContactRouter);
+
+
 
 
 
@@ -27,7 +34,7 @@ app.use("/contact", ContactRouter);
 // https://mongoosejs.com/docs/api/connection.html
 app.get("/databaseHealth", (request, response, next) => {
 
-    // return next();
+	// return next();
 
     let databaseState = mongoose.connection.readyState;
     let databaseName = mongoose.connection.name;
@@ -42,20 +49,22 @@ app.get("/databaseHealth", (request, response, next) => {
     })
 });
 
+
 app.get("*", (request, response) => {
-    response.json({message:"404 route activated!"})
+	response.json({message:"404 route activated!"})
 })
 
 
-app.use((error, request, response) => {
+app.use((error, request, response, next) => {
 
-    response.status(500).json({
-        message: "Error occured in the server.",
-        error: error.message
-    });
+	response.status(500).json({
+		message:"Error occured in the server.",
+		error: error.message
+	});
 
 });
 
+
 module.exports = {
-    app
+	app
 }
