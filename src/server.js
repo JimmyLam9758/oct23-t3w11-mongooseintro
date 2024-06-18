@@ -16,10 +16,19 @@ app.get("/", (request, response, next) => {
 
 });
 
+const ContactRouter = require("./controllers/ContactRouter.js");
+app.use("/contact", ContactRouter);
+
+
+
+
 // Return a bunch of useful details from the database connection
 // Dig into each property here:
 // https://mongoosejs.com/docs/api/connection.html
-app.get("/databaseHealth", (request, response) => {
+app.get("/databaseHealth", (request, response, next) => {
+
+    // return next();
+
     let databaseState = mongoose.connection.readyState;
     let databaseName = mongoose.connection.name;
     let databaseModels = mongoose.connection.modelNames();
@@ -33,7 +42,12 @@ app.get("/databaseHealth", (request, response) => {
     })
 });
 
-app.use((error, request, response, next) => {
+app.get("*", (request, response) => {
+    response.json({message:"404 route activated!"})
+})
+
+
+app.use((error, request, response) => {
 
     response.status(500).json({
         message: "Error occured in the server.",
